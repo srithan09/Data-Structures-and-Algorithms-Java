@@ -19,6 +19,7 @@ class TreeNode
 }
 class Solution1
 {
+    // Breadth First Approach
     HashMap<TreeNode,TreeNode> parentMap = new HashMap<>();
     ArrayList<TreeNode> leaves = new ArrayList<>();
     public void buildParentMap(TreeNode root)
@@ -104,7 +105,60 @@ class Solution1
 }
 class Solution2
 {
-    
+    // Approach-2 DFS
+    public int goodPair;
+    public int goodPairCount(TreeNode root, int distance)
+    {
+        goodPair =0;
+        dfs(root,distance);
+        return goodPair;
+    }
+    public ArrayList<Integer> dfs(TreeNode root,int distance)
+    {
+        if(root == null) return new ArrayList<>();
+        if(root.left == null && root.right == null)
+        {
+            ArrayList<Integer> ans = new ArrayList<>();
+            ans.add(1);
+            return ans;
+        }
+        ArrayList<Integer> left = dfs(root.left, distance);
+        ArrayList<Integer> right = dfs(root.right,distance);
+
+        //distance calculation
+        for(Integer l : left)
+        {
+            for(Integer r : right)
+            {
+                if(l + r <= distance)
+                {
+                    goodPair ++;
+                }
+            }
+        }
+        // new array creation
+        ArrayList<Integer> result = new ArrayList<>();
+        for(Integer l : left)
+        {
+            int newDistance = l + 1;
+            if(newDistance < distance)
+            {
+                result.add(newDistance);
+            }
+        }
+        for(Integer r: right)
+        {
+            int newDistance = r + 1;
+            if(newDistance < distance)
+            {
+                result.add(newDistance);
+            }
+        }
+
+        return result;
+    }
+
+
 }
 public class goodLeafPair {
     
